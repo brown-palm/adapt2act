@@ -1,0 +1,91 @@
+# environment
+task: metaworld-door-close
+modality: 'state'
+action_repeat: ???
+discount: 0.99
+episode_length: 1000/${action_repeat}
+train_steps: 500000/${action_repeat}
+
+# planning
+iterations: 6
+num_samples: 512
+num_elites: 64
+mixture_coef: 0.05
+min_std: 0.05
+temperature: 0.5
+momentum: 0.1
+
+# learning
+batch_size: 512
+max_buffer_size: 1000000
+horizon: 5
+reward_coef: 0.5
+value_coef: 0.1
+consistency_coef: 2
+rho: 0.5
+kappa: 0.1
+lr: 1e-3
+std_schedule: linear(0.5, ${min_std}, 25000)
+horizon_schedule: linear(1, ${horizon}, 25000)
+per_alpha: 0.6
+per_beta: 0.4
+grad_clip_norm: 10
+seed_steps: 5000
+update_freq: 2
+tau: 0.01
+
+# architecture
+enc_dim: 256
+mlp_dim: 512
+latent_dim: 50
+
+# wandb (insert your own)
+use_wandb: False
+wandb_project: videoadapt_test
+wandb_entity: "[YOUR WANDB ENTITY]"
+
+# misc
+seed: 1 
+exp_name: default
+eval_freq: 20000 # 90000 for dmc
+eval_episodes: 10
+save_video: true
+save_model: true
+
+# text conditioning
+text_prompt: ''
+
+# guidance parameters
+noise_level: 700
+alignment_scale: 1000
+recon_scale: 1000
+
+# guidance scale only used for simclr and dinov2 with recon
+guidance_scale: 2.5
+context_window: 8
+stride: 4
+
+# used for dreambooth/finetuning
+domain: 'mw'
+use_dreambooth: false
+use_finetuned: false
+
+# probadap with avdc
+prior_strength: 0.1
+avdc_prompt: ''
+inverted_probadap: false
+
+# sparse reward
+sparse_scale: 1
+
+# video planning
+plan_count: 1
+plan_inf_steps: 25
+plan_num_rollouts: 3
+plan_is_conditioning_animatediff: true
+
+plan_with_probadap: false
+plan_with_dreambooth: false
+plan_with_finetuned: false
+
+use_suboptimal: false

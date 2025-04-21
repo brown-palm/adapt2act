@@ -1,0 +1,6 @@
+train_steps: 1000000/${action_repeat}
+episode_length: 200/${action_repeat}
+action_repeat: 1
+eval_episodes: 30
+domain: mw
+inv_ckpt_path: './checkpoints/inv_dyn.ckpt'
