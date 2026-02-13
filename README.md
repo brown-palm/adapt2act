@@ -300,7 +300,7 @@ We provide the implementation of Inverse Dyanmics Model in `src/utils.py`. For i
 
 Dataset Structure:
 ```python
-class InvDynDataset(Dataset):
+class IDMDataset(Dataset):
     def __init__(self):
         self.frames = []
         self.actions = []
@@ -322,15 +322,15 @@ class InvDynDataset(Dataset):
 Training Loop:
 ```python
 device = torch.device('cuda')
-inv_loader = DataLoader(inv_dataset, batch_size=inv_dyn_batch_size, shuffle=True)
+idm_loader = DataLoader(idm_dataset, batch_size=idm_batch_size, shuffle=True)
 for step in tqdm(range(num_training_steps)):
-    obs, actions = next(iter(inv_loader))
+    obs, actions = next(iter(idm_loader))
     obs = obs.contiguous()
-    loss = inv_model.calculate_loss(obs.to(device), actions.to(device))
-    inv_dyn_optimizer.zero_grad()
+    loss = idm_model.calculate_loss(obs.to(device), actions.to(device))
+    idm_optimizer.zero_grad()
     loss.backward()
-    nn.utils.clip_grad_norm_(inv_model.parameters(), 1.0)
-    inv_dyn_optimizer.step()
+    nn.utils.clip_grad_norm_(idm_model.parameters(), 1.0)
+    idm_optimizer.step()
 ```
 
 ## Citation
