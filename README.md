@@ -303,7 +303,7 @@ Dataset Structure:
 class IDMDataset(Dataset):
     def __init__(self):
         self.frames = []
-        self.actions = []
+        self.actions = [] # Padding actions with an additional dummy None element to match the length of frames
 
     def __getitem__(self, index):
         if self.actions[index] is None:  # dummy action
