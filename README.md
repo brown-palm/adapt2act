@@ -295,7 +295,43 @@ python src/visual_planning.py task="metaworld-door-close" \
     inverted_probadap=True \
     use_suboptimal=True
 ```
+## IDM Training
+We provide the implementation of Inverse Dyanmics Model in `src/utils.py`. For inverse dynamics training, we provide the hyperparaemeters in the Appendix of the paper and related code snippets below for reference.
 
+Dataset Structure:
+```python
+class InvDynDataset(Dataset):
+    def __init__(self):
+        self.frames = []
+        self.actions = []
+
+    def __getitem__(self, index):
+        if self.actions[index] is None:  # dummy action
+            frames = torch.cat([self.frames[index - 1], self.frames[index]])
+            action = self.actions[index - 1]
+        else:
+            frames = torch.cat([self.frames[index], self.frames[index + 1]])
+            action = self.actions[index]
+
+        return (frames, action)
+
+    def __len__(self):
+        return len(self.frames) - 1 if len(self.frames) > 0 else 0 # prevent index + 1 out of range
+```
+
+Training Loop:
+```python
+device = torch.device('cuda')
+inv_loader = DataLoader(inv_dataset, batch_size=inv_dyn_batch_size, shuffle=True)
+for step in tqdm(range(num_training_steps)):
+    obs, actions = next(iter(inv_loader))
+    obs = obs.contiguous()
+    loss = inv_model.calculate_loss(obs.to(device), actions.to(device))
+    inv_dyn_optimizer.zero_grad()
+    loss.backward()
+    nn.utils.clip_grad_norm_(inv_model.parameters(), 1.0)
+    inv_dyn_optimizer.step()
+```
 
 ## Citation
 If you find this repository helpful, please consider citing our work:
