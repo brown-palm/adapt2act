@@ -296,7 +296,7 @@ python src/visual_planning.py task="metaworld-door-close" \
     use_suboptimal=True
 ```
 ## IDM Training
-We provide the implementation of Inverse Dynamics Model in `src/utils.py`. For inverse dynamics training, we provide the hyperparaemeters in the Appendix of the paper and related code snippets below for reference.
+We provide the implementation of Inverse Dynamics Model in `src/utils.py`. For inverse dynamics training, we provide the hyperparameters in the Appendix of the paper and related code snippets below for reference.
 
 Dataset Structure:
 ```python
